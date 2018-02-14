@@ -1,0 +1,35 @@
+version: "3"
+services:
+  mongo1:
+    container_name: mongo1
+    image: mongo
+    ports:
+      - 27017:27017
+    networks:
+      - mongo-net
+    command:
+      --replSet rslab
+    hostname: mongo1.lab
+  mongo2:
+    container_name: mongo2
+    image: mongo
+    ports:
+      - 27018:27017
+    networks:
+      - mongo-net
+    command:
+      --replSet rslab
+    hostname: mongo2.lab
+  mongo3:
+    container_name: mongo3
+    image: mongo
+    ports:
+      - 27019:27017
+    networks:
+      - mongo-net
+    command:
+      --replSet rslab
+    hostname: mongo3.lab
+
+networks:
+  mongo-net:
