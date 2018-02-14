@@ -1,0 +1,109 @@
+version: "3"
+services:
+  #config server
+  mongo-config-server-01:
+    container_name: mongo-config-server-01
+    image: mongo
+    ports:
+      - 27017:27017
+    networks:
+      - sharding-mongo-net
+    command:
+       --configsvr --replSet mongo-config-set --port 27017
+    hostname: mongo-config-01.lab
+  mongo-config-server-02:
+    container_name: mongo-config-server-02
+    image: mongo
+    ports:
+      - 27018:27017
+    networks:
+      - sharding-mongo-net
+    command:
+      --configsvr --replSet mongo-config-set --port 27017
+    hostname: mongo-config-02.lab
+  mongo-config-server-03:
+    container_name: mongo-config-server-03
+    image: mongo
+    ports:
+      - 27019:27017
+    networks:
+      - sharding-mongo-net
+    command:
+      --configsvr --replSet mongo-config-set --port 27017
+  #shard 1
+  mongo-shard-server-01A:
+    container_name: mongo-shard-server-01A
+    image: mongo
+    ports:
+      - 37017:27017
+    networks:
+      - sharding-mongo-net
+    command:
+      --replSet mongo-shard-set-01
+    hostname: mongo-shar-01A.lab
+  mongo-shard-server-01B:
+    container_name: mongo-shard-server-01B
+    image: mongo
+    ports:
+      - 37018:27017
+    networks:
+      - sharding-mongo-net
+    command:
+      --replSet mongo-shard-set-01
+    hostname: mongo-shar-01B.lab
+  mongo-shard-server-01C:
+    container_name: mongo-shard-server-01C
+    image: mongo
+    ports:
+      - 37019:27017
+    networks:
+      - sharding-mongo-net
+    command:
+      --replSet mongo-shard-set-01
+    hostname: mongo-shar-01C.lab
+
+  #shard 2
+  mongo-shard-server-02A:
+    container_name: mongo-shard-server-02A
+    image: mongo
+    ports:
+      - 47017:27017
+    networks:
+      - sharding-mongo-net
+    command:
+      --replSet mongo-shard-set-02
+    hostname: mongo-shar-01A.lab
+  mongo-shard-server-02B:
+    container_name: mongo-shard-server-02B
+    image: mongo
+    ports:
+      - 47018:27017
+    networks:
+      - sharding-mongo-net
+    command:
+      --replSet mongo-shard-set-02
+    hostname: mongo-shar-02B.lab
+  mongo-shard-server-02C:
+    container_name: mongo-shard-server-02C
+    image: mongo
+    ports:
+      - 47019:27017
+    networks:
+      - sharding-mongo-net
+    command:
+      --replSet mongo-shard-set-02
+    hostname: mongo-shar-02C.lab
+
+  #router
+  mongo-router-server-01:
+    container_name: mongo-router-server-01
+    image: mongo
+    ports:
+      - 57018:27017
+    networks:
+      - sharding-mongo-net
+    command:
+      --configdb  mongo-config-set/mongo-config-01.lab:27017,mongo-config-02.lab:27017,mongo-config-03.lab:27017
+    hostname: mongo-shar-02B.lab
+networks:
+  sharding-mongo-net:
