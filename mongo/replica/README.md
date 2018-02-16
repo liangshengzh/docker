@@ -6,9 +6,9 @@ docker-compose up
 rs.initiate( {
    _id : "rslab",
    members: [
-      { _id: 0, host: " mongo-config-01.lab:27017" },
-      { _id: 1, host: " mongo-config-02.lab:27017" },
-      { _id: 2, host: " mongo-config-03.lab:27017" }
+      { _id: 0, host: " mongo1:27017" },
+      { _id: 1, host: " mongo2:27017" },
+      { _id: 2, host: " mongo3:27017" }
    ]
 })
 rs.status()
