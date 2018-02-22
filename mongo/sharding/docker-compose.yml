@@ -100,7 +100,7 @@ services:
     container_name: router.mongo.lab
     image: mongo
     ports:
-      - 57018:27017
+      - 57017:27017
     networks:
       - mongo-net
     command:
