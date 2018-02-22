@@ -2,32 +2,39 @@ version: "3"
 
 
 services:
-  zookeeper1.kafka.lab:
+  server1.zookeeper.lab:
     image: zookeeper
     restart: always
-    hostname: zookeeper1.kafka.lab
+    hostname: server1.zookeeper.lab
     ports:
       - 2181:2181
     environment:
       ZOO_MY_ID: 1
-      ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zookeeper2.kafka.lab:2888:3888 server.3=zookeeper3.kafka.lab:2888:3888
-
-  zookeeper2.kafka.lab:
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=server2.zookeeper.lab:2888:3888 server.3=server3.zookeeper.lab:2888:3888
+    networks:
+      - zookeeper-net
+  server2.zookeeper.lab:
     image: zookeeper
     restart: always
-    hostname: zookeeper2.kafka.lab
+    hostname: server1.zookeeper.lab
     ports:
       - 2182:2181
     environment:
       ZOO_MY_ID: 2
-      ZOO_SERVERS: server.1=zookeeper1.kafka.lab:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zookeeper3.kafka.lab:2888:3888
-
-  zookeeper3.kafka.lab:
+      ZOO_SERVERS: server1.zookeeper.lab:2888:3888 server.2=0.0.0.0:2888:3888 server.3=server3.zookeeper.lab:2888:3888
+    networks:
+      - zookeeper-net
+  server3.zookeeper.lab:
     image: zookeeper
     restart: always
-    hostname: zookeeper3.kafka.lab
+    hostname: server3.zookeeper.lab
     ports:
       - 2183:2181
     environment:
       ZOO_MY_ID: 3
-      ZOO_SERVERS: server.1=zookeeper1.kafka.lab:2888:3888 server.2=zookeeper2.kafka.lab:2888:3888 server.3=0.0.0.0:2888:3888
+      ZOO_SERVERS: server.1=server1.zookeeper.lab:2888:3888 server.2=server2.zookeeper.lab:2888:3888 server.3=0.0.0.0:2888:3888
+    networks:
+      - zookeeper-net
+      
+networks:
+  zookeeper-net:
